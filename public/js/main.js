@@ -47,12 +47,17 @@ function setOutput() {
     
     if(chances === 0) {
         setIntoAddressBar(addressBar+"...You_lost!!!");
+        createZoom();    
+        alert("You lost!");
     } else if (guess.indexOf(STAR) < 0) {
         setIntoAddressBar(addressBar+"...You_won!!!");
+        createZoom();    
+        alert("You won!");
     } else {
         setIntoAddressBar(addressBar);
+        createZoom();    
     }
-    createZoom();    
+    
 }
 
 function setIntoAddressBar(what) {
@@ -62,9 +67,12 @@ function setIntoAddressBar(what) {
 }
 
 function setStatus(correct) {
-      
-    const s = correct ? "Correct!" : "Wrong!";
-    document.getElementById("game-status").innerHTML = s;    
+    document.getElementById("this-game-status").innerHTML = correct ? "Correct!" : "Wrong!";   
+    document.getElementById("this-game-status").style.color = correct ? "green" : "red"; 
+
+
+    document.getElementById("this-game-attempts").innerHTML = chances;  
+    document.getElementById("this-game-hangman").innerHTML = drawGamer();
 }
 
 function createZoom() {

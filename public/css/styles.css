@@ -1,21 +1,45 @@
 html, html * {
     font-family: monospace;
     font-size:17px;
-    max-width:1000px;
 }
 
-.choosers {
-
+.grid {
+    display: grid;
+    height:100%;
+    grid-gap: 5px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 40px auto auto 40px;
+   
+    grid-template-areas:
+     "h h h h h b"
+     "m s s s s s"
+     "m d d d d d"
+     "f f f f f f";
+}
+.grid > * {
+    
+}
+.grid .header {
+    grid-area: h;
+}
+.grid .main {
+    grid-area: m;
+}
+.grid .description {
+    grid-area: d;
+}
+.grid .footer{
+    grid-area: f;
+}
+.grid .buttons{
+    grid-area: b;
+}
+.grid .status{
+    grid-area: s;
 }
 
-h1 > div {
-    transform: rotate(-90deg);
-    font-size: inherit;
-    position: relative;
-    display: inline-block;
-    left: -23px;
-    top: -9px;
-}
+
+
 .character {
     display:inline-flex;
     border:1px solid #DDD;
@@ -34,44 +58,8 @@ h1 > div {
 .character.clicked.correct {
     background:green;
 }
-#output {
-    width:100%;
-    display:block;
-}
-a {
-    padding:10px;
-    border:1px solid #DDD;
-    background:green;
-    margin:10px 0px;
-    display:inline-block;
-    font-size:20px;
-    color:white;
-    text-decoration: none;
-    cursor:pointer;
-}
-b {
-    color:red;
-}
-h1 {
-    font-size:30px;
-    white-space:nowrap;
-}
-h4 {
-    font-size:25px;
-    margin-bottom:5px;
-}
-p {
-    text-align:justify;
-    background: #EEE;
-    padding: 10px;
-    box-shadow: 3px 3px 3px #e8e8e8;
-}
 
-ul {
-    background:#f8f8f8;
-    padding-top:10px;
-    padding-bottom:10px;
-}
+
 
 #zoom {
     width:100%;
@@ -80,8 +68,9 @@ ul {
     padding:5px;
     min-height:20px;
 }
-
-#game-status {
+#this-game-attempts,
+#this-game-hangman,
+#this-game-status {
     width:100%;
     font-size:20px;
     border:1px solid #DDD;
