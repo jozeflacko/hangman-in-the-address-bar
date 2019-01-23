@@ -83,7 +83,7 @@ function evaluate(key) {
     pause(1000);
 
     if(chances === 0) {
-        print("You have lost!!! Hangword was: "+hangword+" "+drawGamer());   
+        print("You have lost!!! Hangword was: "+hangWord+" "+drawGamer());   
        } else if (guess.indexOf(STAR) < 0) {
         print("You have won!!! Congratulations");
     } else {
