@@ -1,4 +1,3 @@
-
 var currentMessage = "";
 
 const words = [
@@ -18,31 +17,36 @@ let visibleLetters = "";
 const clickedCharacters = [];
 let chances = 5;
 
-function print(m){
-    const TIMEOUT_MS = 50;        
+function print(m, fast){
+    m = replaceAll(m, " ", "_"); 
+    m = m.toUpperCase();     
+    
+    if(fast === true) {
+        setHistoryState(m);
+        return;
+    }    
+    const TIMEOUT_MS = 100;        
     for(let i=0; i<=m.length;i++) {            
         pause(TIMEOUT_MS);      
         setHistoryState(m.substring(0, i));
+    } 
+    
+    function setHistoryState(m) {   
+        currentMessage = "?_" + m;
+        history.replaceState(null, null, currentMessage);  
     }
-    return TIMEOUT_MS * m.length;
-}
-
-function setHistoryState(m) {
-    m = replaceAll(m, " ", "_"); 
-    m = m.toUpperCase();     
-    currentMessage = "?_" + m;
-    history.replaceState(null, null, currentMessage);
-
     function replaceAll(str, a, b) {
         return str.split(a).join(b);
     }  
 }
 
-function onKeyPress(e) {
-    var key = (e.key).toUpperCase()
-    console.log(key);
-    setHistoryState("Pressed key: " + key);
 
+
+function onKeyPress(e) {
+    var key = (e.key).toUpperCase();
+    console.log(key);
+    //setTimeout(()=>{ document.getElementById("key").innerHTML = key; },0);
+    print("Pressed key: " + key, true);
 
 
     evaluate(key);
@@ -70,11 +74,11 @@ function evaluate(key) {
     clickedCharacters.push(key);
     const match = hangWord.indexOf(key) > -1;
     if(match) {
-        print("correct!"); 
+        print("correct!", true); 
         visibleLetters += key;                    
     } else {
         chances--;  
-        print("wrong!"); 
+        print("wrong!", true); 
     }
 
     let guess = getWord();
@@ -83,24 +87,23 @@ function evaluate(key) {
     pause(1000);
 
     if(chances === 0) {
-        setHistoryState("You have lost!!! Hangword was: "+hangword);   
-        alert("You lost!");
-    } else if (guess.indexOf(STAR) < 0) {
-        setHistoryState("You have won!!! Congratulations");
+        print("You have lost!!!     Hangword was: "+hangword+" "+drawGamer());   
+       } else if (guess.indexOf(STAR) < 0) {
+        print("You have won!!! Congratulations");
     } else {
         const word = getWord();
+        const h = chances > 4 ? "" : drawGamer(); 
+        pause(1000); 
         if(match) {
-            pause(1000);            
-            print("word: "+word+". Keep going"); 
+            print(word+".    Keep going. ____Your hangman: "+ h); 
         } else {
-            pause(1000);
-            print("word: "+word+". Try again!"); 
+            print(word+".    Try again! "+chances+" left chances.___your hangman: "+ h); 
         }  
     }
     
 }
 
-/*
+
 function drawGamer() {
     if(chances === 0) {
         return "L_o!<";
@@ -116,23 +119,28 @@ function drawGamer() {
         return "";
     }
 }
-*/
+
 window.addEventListener("keydown", onKeyPress);
 
-const randomNumber = Math.floor(Math.random() * words.length);
-hangWord = (words[randomNumber]).toUpperCase();
-console.log("Random hangword will be:"+hangWord);
+print("",true);
 
-setHistoryState("");
-print("THIS IS A GAME: HANGMAN IN THE ADDRESS BAR !");
-pause(1000);
-print("You play against the address bar!");
-pause(1000);
-print("Amouth of your false attempts till you hang is "+chances+".");
-pause(1000);
-print("Your hangword has "+hangWord.length+" characters with blank spaces and it is a car brand.");
-pause(1000);
-print(getWord()+". Type 1 character on your keyboard:");
+function start() {
+    const randomNumber = Math.floor(Math.random() * words.length);
+    hangWord = (words[randomNumber]).toUpperCase();
+    console.log("Random hangword will be:"+hangWord);
+
+    print("",true);
+    print("HANGMAN IN THE ADDRESS BAR !");
+    pause(2000);
+    print("In this game You play against the address bar!");
+    pause(1000);
+    print("you can make "+chances+" wrong decisions till you hang");
+    pause(1000);
+    print("You are searching for a car brand.");
+    pause(1000);
+    const w = getWord();
+    print("your word:"+w+". ___Type a character on your keyboard:");
+}
 
 
 
