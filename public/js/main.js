@@ -1,13 +1,9 @@
 var currentMessage = "";
 
 const words = [
-    "TOYOTA",
-    "VOLKSWAGEN",
-    "AUDI",
-    "BMW",
-    "PORSCHE",
-    "SKODA",
-    "KIA",
+"AUSTRIA","USA","CANADA","EGYPT","DENMARK","FINLAND","HUNGARY",
+"POLAND","CZECH","RUSSIA","UKRAINE","VIETNAM","TAIWAN","JAPAN",
+"CHINA","PERU","NETHERLANDS","KOREA","JAMAICA","MONACO","PORTUGAL"
 ];
 
 const EMPTY = "_";
@@ -95,9 +91,9 @@ function evaluate(key) {
         const h = chances > 4 ? "" : drawGamer(); 
         pause(1000); 
         if(match) {
-            print(word+".Your hangman: "+ h); 
+            print(word+". "+ h); 
         } else {
-            print(word+".Left chances:"+chances+". Your hangman: "+ h); 
+            print(word+".Left chances:"+chances+". "+ h); 
         }  
     }
     
@@ -136,7 +132,7 @@ function start() {
     pause(1000);
     print("you can make "+chances+" wrong decisions till you hang");
     pause(1000);
-    print("You are searching for a car brand.");
+    print("You are searching for a COUNTRY.");
     pause(1000);
     const w = getWord();
     print("your word:"+w+". ___Type a character on your keyboard:");
