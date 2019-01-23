@@ -1,35 +1,55 @@
-const EMPTY = "_";
-const STAR = "*";
+
+var currentMessage = "";
 
 const words = [
-    "vacuum cleaner",
-    "hotline",
-    "katholic church",
-    "city center",
-    "portfolio",
-    "Have a nice day"
+    "TOYOTA",
+    "VOLKSWAGEN",
+    "AUDI",
+    "BMW",
+    "PORSCHE",
+    "SKODA",
+    "KIA",
 ];
 
+const EMPTY = "_";
+const STAR = "*";
 let hangWord = "";
 let visibleLetters = "";
 const clickedCharacters = [];
 let chances = 5;
 
-
-function setup() {
-    const randomNumber = Math.floor(Math.random() * words.length);
-    hangWord = (words[randomNumber]).toUpperCase();
-    setOutput();
-    installClickOnCharacters();
-
-    console.log(hangWord);
-    setTimeout(()=>{
-        setIntoAddressBar("");
-    },500);
+function print(m){
+    const TIMEOUT_MS = 50;        
+    for(let i=0; i<=m.length;i++) {            
+        pause(TIMEOUT_MS);      
+        setHistoryState(m.substring(0, i));
+    }
+    return TIMEOUT_MS * m.length;
 }
 
-function setOutput() {
-    let guess = "";
+function setHistoryState(m) {
+    m = replaceAll(m, " ", "_"); 
+    m = m.toUpperCase();     
+    currentMessage = "?_" + m;
+    history.replaceState(null, null, currentMessage);
+
+    function replaceAll(str, a, b) {
+        return str.split(a).join(b);
+    }  
+}
+
+function onKeyPress(e) {
+    var key = (e.key).toUpperCase()
+    console.log(key);
+    setHistoryState("Pressed key: " + key);
+
+
+
+    evaluate(key);
+}
+
+function getWord() {
+    var guess = "";
     for(let i=0; i<hangWord.length; i++) {
         const expectedLetter = hangWord.charAt(i);
         
@@ -42,47 +62,45 @@ function setOutput() {
         }
         
     }
-    const PLACE ="___";
-    const addressBar = "?word="+ guess + "&hangman="+ drawGamer() + PLACE + "&leftAttempts="+chances;
+    return ">>"+guess+"<<";
+}
+
+function evaluate(key) {
+    pause(500);
+    clickedCharacters.push(key);
+    const match = hangWord.indexOf(key) > -1;
+    if(match) {
+        print("correct!"); 
+        visibleLetters += key;                    
+    } else {
+        chances--;  
+        print("wrong!"); 
+    }
+
+    let guess = getWord();
+    //const addressBar = "?word="+ guess + "&hangman="+ drawGamer() + PLACE + "&leftAttempts="+chances;
     
+    pause(1000);
+
     if(chances === 0) {
-        setIntoAddressBar(addressBar+"...You_lost!!!");
-        createZoom();    
+        setHistoryState("You have lost!!! Hangword was: "+hangword);   
         alert("You lost!");
     } else if (guess.indexOf(STAR) < 0) {
-        setIntoAddressBar(addressBar+"...You_won!!!");
-        createZoom();    
-        alert("You won!");
+        setHistoryState("You have won!!! Congratulations");
     } else {
-        setIntoAddressBar(addressBar);
-        createZoom();    
+        const word = getWord();
+        if(match) {
+            pause(1000);            
+            print("word: "+word+". Keep going"); 
+        } else {
+            pause(1000);
+            print("word: "+word+". Try again!"); 
+        }  
     }
     
 }
 
-function setIntoAddressBar(what) {
-    history.replaceState(null, null, what);
-
-    
-}
-
-function setStatus(correct) {
-    document.getElementById("this-game-status").innerHTML = correct ? "Correct!" : "Wrong!";   
-    document.getElementById("this-game-status").style.color = correct ? "green" : "red"; 
-
-
-    document.getElementById("this-game-attempts").innerHTML = chances;  
-    document.getElementById("this-game-hangman").innerHTML = drawGamer();
-}
-
-function createZoom() {
-    const url = location.href;
-
-
-
-    document.getElementById("zoom").innerHTML = url;
-}
-
+/*
 function drawGamer() {
     if(chances === 0) {
         return "L_o!<";
@@ -98,34 +116,23 @@ function drawGamer() {
         return "";
     }
 }
+*/
+window.addEventListener("keydown", onKeyPress);
 
-function characterClickEvent(character) {   
-    if(character.classList.contains("clicked") === false) {
-        const value = character.innerHTML;
-        clickedCharacters.push(value);
-        character.classList.add("clicked");
-        if(hangWord.indexOf(value) > -1) {
-            character.classList.add("correct");
-            setStatus(true);
-            visibleLetters += value;                    
-        } else {
-            chances--;     
-            setStatus(false);   
-        }
-        setOutput();
-    }    
-}
+const randomNumber = Math.floor(Math.random() * words.length);
+hangWord = (words[randomNumber]).toUpperCase();
+console.log("Random hangword will be:"+hangWord);
 
-function installClickOnCharacters() {
-    const characters = document.getElementsByClassName("character");
-    for(let i=0; i<characters.length; i++) { 
-        characters[i].addEventListener("click", () => { characterClickEvent(characters[i]) });
-    }
-}
-
-(function startGame() {
-    setup();
-})();
+setHistoryState("");
+print("THIS IS A GAME: HANGMAN IN THE ADDRESS BAR !");
+pause(1000);
+print("You play against the address bar!");
+pause(1000);
+print("Amouth of your false attempts till you hang is "+chances+".");
+pause(1000);
+print("Your hangword has "+hangWord.length+" characters with blank spaces and it is a car brand.");
+pause(1000);
+print(getWord()+". Type 1 character on your keyboard:");
 
 
 
