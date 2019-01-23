@@ -95,9 +95,9 @@ function evaluate(key) {
         const h = chances > 4 ? "" : drawGamer(); 
         pause(1000); 
         if(match) {
-            print(word+".    Keep going. ____Your hangman: "+ h); 
+            print(word+".Your hangman: "+ h); 
         } else {
-            print(word+".    Try again! "+chances+" left chances.___your hangman: "+ h); 
+            print(word+".Left chances:"+chances+". Your hangman: "+ h); 
         }  
     }
     
