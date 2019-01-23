@@ -83,17 +83,17 @@ function evaluate(key) {
     pause(1000);
 
     if(chances === 0) {
-        print("You have lost!!!     Hangword was: "+hangword+" "+drawGamer());   
+        print("You have lost!!! Hangword was: "+hangword+" "+drawGamer());   
        } else if (guess.indexOf(STAR) < 0) {
         print("You have won!!! Congratulations");
     } else {
         const word = getWord();
-        const h = chances > 4 ? "" : drawGamer(); 
+        const h = chances > 4 ? "" : "hangman:"+drawGamer(); 
         pause(1000); 
         if(match) {
-            print(word+". "+ h); 
+            print("country: "+word+". "+ h); 
         } else {
-            print(word+".Left chances:"+chances+". "+ h); 
+            print("country: "+word+".Left chances:"+chances+". "+ h); 
         }  
     }
     
@@ -135,7 +135,7 @@ function start() {
     print("You are searching for a COUNTRY.");
     pause(1000);
     const w = getWord();
-    print("your word:"+w+". ___Type a character on your keyboard:");
+    print("country:"+w+". ___Type a character on your keyboard:");
 }
 
 
