@@ -5,7 +5,7 @@ Perfect Easter Egg! Enjoy
 
 ### Screenshot
 <p style='max-width:360px;'>
-	<img src="https://rawgit.com/opam/hangman-in-the-address-bar/master/img/index.png" alt="snippet">
+	<img src="https://github.com/jozeflacko/hangman-in-the-address-bar/blob/master/img/index.jpg?raw=true" alt="snippet">
 </p> 
 
 ## Authors
